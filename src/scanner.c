@@ -128,11 +128,11 @@ bool isAlpha(char c) {
 
 TokenType checkKeyword(int start, int length,
     const char* rest, TokenType type) {
-
-    if(scanner.current - scanner.start == start + length &&
-        memcmp(scanner.start + start, rest, length)) {
+        if(scanner.current - scanner.start == start + length &&
+        memcmp(scanner.start + start, rest, length) == 0) {
             return type;
         }
+
     return TOKEN_IDENTIFIER;
 }
 
@@ -144,9 +144,9 @@ TokenType identifierType() {
         case 'e' : return checkKeyword(1, 3, "else", TOKEN_ELSE);
         case 'f' :
             if(scanner.current - scanner.start > 1) {
-                switch (scanner.current[1]) {
+                switch (scanner.start[1]) {
                     case 'o': return checkKeyword(2, 1, "r", TOKEN_FOR);
-                    case 'a': return checkKeyword(2, 3, "lse", TOKEN_FOR);
+                    case 'a': return checkKeyword(2, 3, "lse", TOKEN_FALSE);
                     case 'u': return checkKeyword(2, 1, "n", TOKEN_FUN);
                 }
             }
@@ -159,7 +159,7 @@ TokenType identifierType() {
         case 's' : return checkKeyword(1, 4, "uper", TOKEN_SUPER);
         case 't' :
             if(scanner.current - scanner.start > 1) {
-                switch (scanner.current[1]) {
+                switch (scanner.start[1]) {
                     case 'r' : return checkKeyword(2, 2, "ue", TOKEN_TRUE);
                     case 'h' : return checkKeyword(2, 2, "is", TOKEN_THIS);
                 }
@@ -172,8 +172,8 @@ TokenType identifierType() {
 }
 
 Token identifier() {
-    while(isAlpha(peek()) || isDigit(peek())) advance();
 
+    while(isAlpha(peek()) || isDigit(peek())) advance();
     return makeToken(identifierType());
 }
 

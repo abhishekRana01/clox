@@ -20,7 +20,7 @@ void repl() {
     }
 }
 
-char* readFile(char* path) {
+char* readFile(const char* path) {
     FILE* file = fopen(path, "rb");
 
     fseek(file, 0L, SEEK_END);
@@ -29,14 +29,14 @@ char* readFile(char* path) {
 
     char* buffer = (char*) malloc(fileSize + 1);
     size_t bytesRead = fread(buffer, sizeof(char), fileSize, file);
-    buffer[bytesRead] = "\0";
+    buffer[bytesRead] = '\0';
 
     fclose(file);
     return buffer;
 }
 
 
-void runFile(char *path) {
+void runFile(const char *path) {
     char* source = readFile(path);
     InterpretResult result = interpret(source);
     free(source);
